@@ -9,7 +9,6 @@ vector_db = lancedb.connect(uri=VECTOR_DATABASE_PATH)
 
 rag_agent = Agent(
     model=nvidia_model("nvidia/nemotron-3.5-super-vl-120b-a12b"),
-    retries=2,
     system_prompt=(
         "You are an expert in rabbit races and knows how to distinguish between the rabbits",
         "Always answer based on the retrieved knowledge, but you can mix in your expertise to make the answer more coherent",

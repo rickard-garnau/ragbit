@@ -1,8 +1,10 @@
+import os
 from pathlib import Path
 
 import requests
 import streamlit as st
 
+BASE_URL = os.getenv("API_URL", default="http://localhost:8000")
 ASSETS_PATH = Path(__file__).absolute().parents[1] / "assets"
 
 
@@ -12,9 +14,7 @@ def layout():
     text_input = st.text_input(label="Ask a questions")
 
     if st.button("Send") and text_input.strip() != "":
-        response = requests.post(
-            "http://127.0.0.1:8000/rag/query", json={"prompt": text_input}
-        )
+        response = requests.post(f"{BASE_URL}/rag/query", json={"prompt": text_input})
 
         data = response.json()
 
@@ -27,7 +27,7 @@ def layout():
         st.markdown("## Source:")
         st.markdown(data["filepath"])
 
-        st.image(ASSETS_PATH / f"{data['filename']}.png")
+        st.image(ASSETS_PATH / f"{data['filename'].casefold()}.png")
 
 
 if __name__ == "__main__":
